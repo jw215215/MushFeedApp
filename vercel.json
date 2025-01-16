@@ -7,7 +7,7 @@
       "config": {
         "maxDuration": 30,
         "memory": 3008,
-        "includeFiles": ["api/_build.sh"],
+        "includeFiles": ["api/_build.sh", "libs/**"],
         "buildCommand": "chmod +x api/_build.sh && ./api/_build.sh"
       }
     },
