@@ -1,31 +1,8 @@
-import { webkit, chromium } from 'playwright-core';
+import { webkit } from 'playwright';
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
-
-// Install browser on first run
-async function ensureBrowser() {
-  try {
-    console.log('Installing browser...');
-    const { exec } = require('child_process');
-    await new Promise((resolve, reject) => {
-      exec('npx playwright install webkit', (error, stdout, stderr) => {
-        if (error) {
-          console.error('Install error:', error);
-          reject(error);
-          return;
-        }
-        console.log('Install output:', stdout);
-        resolve();
-      });
-    });
-    console.log('Browser installed successfully');
-  } catch (error) {
-    console.error('Failed to install browser:', error);
-    throw error;
-  }
-}
 
 async function downloadImage(imageUrl) {
   try {
@@ -70,18 +47,20 @@ export default async function shopLookHandler(req, res) {
     tempFilePath = await downloadImage(image_path);
     console.log('Image downloaded successfully');
 
-    // Ensure browser is installed
-    await ensureBrowser();
-
     console.log('Launching browser...');
     browser = await webkit.launch({ 
-      headless: true
+      headless: true,
+      args: ['--no-sandbox']
     });
     
     const context = await browser.newContext({
       viewport: { width: 1280, height: 800 }
     });
     const page = await context.newPage();
+    
+    // Set longer timeouts for serverless environment
+    page.setDefaultTimeout(60000);
+    page.setDefaultNavigationTimeout(60000);
     
     console.log('Navigating to mush.style...');
     await page.goto('https://www.mush.style/en/ai');
@@ -95,6 +74,9 @@ export default async function shopLookHandler(req, res) {
     await page.click('text=upload file');
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(tempFilePath);
+    
+    // Wait for upload to complete
+    await page.waitForTimeout(2000);
     
     console.log('Upload successful');
     res.status(200).json({ success: true });
