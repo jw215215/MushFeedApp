@@ -1,4 +1,4 @@
-import { webkit } from 'playwright';
+import chromium from 'playwright-aws-lambda';
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import path from 'path';
@@ -63,9 +63,13 @@ export default async function handler(req, res) {
     console.log('Image downloaded successfully');
 
     console.log('Launching browser...');
-    browser = await webkit.launch({ 
+    browser = await chromium.launchChromium({
       headless: true,
-      args: ['--no-sandbox']
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage'
+      ]
     });
     
     const context = await browser.newContext({
@@ -74,8 +78,8 @@ export default async function handler(req, res) {
     const page = await context.newPage();
     
     // Set longer timeouts for serverless environment
-    page.setDefaultTimeout(60000);
-    page.setDefaultNavigationTimeout(60000);
+    page.setDefaultTimeout(30000);
+    page.setDefaultNavigationTimeout(30000);
     
     console.log('Navigating to mush.style...');
     await page.goto('https://www.mush.style/en/ai', {

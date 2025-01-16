@@ -5,8 +5,7 @@
       "src": "api/**/*.js",
       "use": "@vercel/node",
       "config": {
-        "installCommand": "npm install && playwright install --with-deps webkit",
-        "maxDuration": 60,
+        "maxDuration": 30,
         "memory": 3008
       }
     },
