@@ -100,3 +100,9 @@ export PUPPETEER_EXECUTABLE_PATH="$(which chromium-browser)"
 
 # Set LD_LIBRARY_PATH to include /usr/lib
 export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
+
+# Install chromium using npm
+npm install @sparticuz/chromium
+
+# Ensure the chromium executable is available in the PATH
+export PATH=$(npm bin):$PATH
