@@ -25,6 +25,31 @@ npm run dev
 npm run api
 ```
 
+## Deployment
+
+### Deploying to Vercel
+
+1. Ensure you have the Vercel CLI installed:
+```bash
+npm install -g vercel
+```
+
+2. Deploy the application:
+```bash
+vercel
+```
+
+### Testing Locally
+
+1. Start the development server:
+```bash
+# Start the frontend
+npm run dev
+
+# Start the API server (in a separate terminal)
+npm run api
+```
+
 ## Tech Stack
 
 - Frontend: React + Vite
