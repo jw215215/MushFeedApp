@@ -62,14 +62,11 @@ export default async function handler(req, res) {
     console.log('Image downloaded successfully');
 
     console.log('Launching browser...');
-    await chromium.setGraphicsMode('swiftshader');
-    await chromium.font('/var/task/fonts/');
-    
     browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
+      headless: "new",
       ignoreHTTPSErrors: true,
     });
     
