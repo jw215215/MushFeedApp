@@ -1,4 +1,5 @@
-import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import path from 'path';
@@ -61,27 +62,18 @@ export default async function handler(req, res) {
     console.log('Image downloaded successfully');
 
     console.log('Launching browser...');
-    const options = {
-      args: [
-        ...chromium.args,
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--single-process',
-        '--disable-gpu'
-      ],
+    await chromium.setGraphicsMode('swiftshader');
+    await chromium.font('/var/task/fonts/');
+    
+    browser = await puppeteer.launch({
+      args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
+      executablePath: await chromium.executablePath(),
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
-    };
+    });
     
-    console.log('Browser launch options:', JSON.stringify(options, null, 2));
-    browser = await chromium.puppeteer.launch(options);
-    
+    console.log('Browser launched successfully');
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 800 });
     
