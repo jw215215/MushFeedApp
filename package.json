@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "api": "node api-server.js",
-    "vercel-build": "vite build && playwright install --with-deps webkit",
+    "vercel-build": "vite build",
     "start": "node api-server.js"
   },
   "dependencies": {
