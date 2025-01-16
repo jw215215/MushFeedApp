@@ -65,8 +65,10 @@ export default async function handler(req, res) {
     
     // Configure minimal Chrome
     const executablePath = await chromium.executablePath;
+    console.log('Executable path:', executablePath);
     
     const minimalArgs = chromium.args;
+    console.log('Chromium args:', minimalArgs);
 
     browser = await puppeteer.launch({
       args: chromium.args,
@@ -105,12 +107,19 @@ export default async function handler(req, res) {
     
   } catch (error) {
     console.error('Handler error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      chromiumPath: await chromium.executablePath,
+      chromiumArgs: chromium.args
+    });
     res.status(500).json({ 
       success: false, 
       error: error.message || 'An unknown error occurred'
     });
   } finally {
     if (browser) {
+      console.log('Closing browser...');
       try {
         await browser.close();
       } catch (error) {
