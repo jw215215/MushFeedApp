@@ -64,14 +64,14 @@ export default async function handler(req, res) {
     console.log('Launching browser...');
     
     // Configure minimal Chrome
-    const executablePath = await chromium.executablePath;
+    const executablePath = await chromium.executablePath();
     console.log('Executable path:', executablePath);
     
     const minimalArgs = chromium.args;
     console.log('Chromium args:', minimalArgs);
 
     browser = await puppeteer.launch({
-      args: chromium.args,
+      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
       defaultViewport: chromium.defaultViewport,
       executablePath,
       headless: chromium.headless,
@@ -110,7 +110,7 @@ export default async function handler(req, res) {
     console.error('Error details:', {
       message: error.message,
       stack: error.stack,
-      chromiumPath: await chromium.executablePath,
+      chromiumPath: await chromium.executablePath(),
       chromiumArgs: chromium.args
     });
     res.status(500).json({ 
