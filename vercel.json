@@ -7,7 +7,7 @@
       "config": {
         "maxDuration": 30,
         "memory": 3008,
-        "includeFiles": ["api/_build.sh", "libs/**"],
+        "includeFiles": ["api/_build.sh"],
         "buildCommand": "chmod +x api/_build.sh && ./api/_build.sh"
       }
     },
@@ -15,19 +15,14 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
-        "buildCommand": "CHROMIUM_PATH=$(which chromium-browser) npm run build"
+        "distDir": "dist"
       }
     }
   ],
   "routes": [
     {
       "src": "/api/shop-look",
-      "dest": "/api/shop-look.js",
-      "headers": {
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type"
-      }
+      "dest": "/api/shop-look.js"
     },
     {
       "handle": "filesystem"
