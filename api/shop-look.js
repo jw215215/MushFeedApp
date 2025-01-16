@@ -63,28 +63,22 @@ export default async function handler(req, res) {
 
     console.log('Launching browser...');
     
-    // Configure minimal Chrome
     const executablePath = await chromium.executablePath();
     console.log('Executable path:', executablePath);
-    
-    if (!executablePath) {
-      throw new Error('Chromium executable path is not defined');
-    }
-    
-    const minimalArgs = chromium.args;
-    console.log('Chromium args:', minimalArgs);
 
     browser = await puppeteer.launch({
-      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-      defaultViewport: chromium.defaultViewport,
+      args: chromium.args,
+      defaultViewport: {
+        width: 1280,
+        height: 800
+      },
       executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true
     });
-    
+
     console.log('Browser launched successfully');
     const page = await browser.newPage();
-    await page.setViewport({ width: 1280, height: 800 });
     
     console.log('Navigating to mush.style...');
     await page.goto('https://www.mush.style/en/ai', {
@@ -99,43 +93,57 @@ export default async function handler(req, res) {
     await uploadButton.click();
     
     console.log('Handling file upload...');
-    const [fileChooser] = await Promise.all([
-      page.waitForFileChooser(),
-      page.click('text=upload file')
-    ]);
-    await fileChooser.accept([tempFilePath]);
+    const fileInput = await page.$('input[type="file"]');
+    await fileInput.uploadFile(tempFilePath);
     
-    await page.waitForTimeout(2000);
-    console.log('Upload successful');
-    res.status(200).json({ success: true });
+    console.log('Waiting for results...');
+    await page.waitForSelector('.results', { timeout: 60000 });
     
+    const results = await page.evaluate(() => {
+      const resultElement = document.querySelector('.results');
+      return resultElement ? resultElement.textContent : null;
+    });
+
+    if (!results) {
+      throw new Error('No results found');
+    }
+
+    await browser.close();
+    await fs.unlink(tempFilePath);
+
+    return res.status(200).json({
+      success: true,
+      results
+    });
+
   } catch (error) {
     console.error('Handler error:', error);
     console.error('Error details:', {
       message: error.message,
       stack: error.stack,
-      chromiumPath: await chromium.executablePath(),
+      chromiumPath: executablePath,
       chromiumArgs: chromium.args
     });
-    res.status(500).json({ 
-      success: false, 
-      error: error.message || 'An unknown error occurred'
-    });
-  } finally {
+
     if (browser) {
-      console.log('Closing browser...');
       try {
         await browser.close();
-      } catch (error) {
-        console.error('Error closing browser:', error);
+      } catch (closeError) {
+        console.error('Error closing browser:', closeError);
       }
     }
+
     if (tempFilePath) {
       try {
         await fs.unlink(tempFilePath);
-      } catch (error) {
-        console.error('Error deleting temp file:', error);
+      } catch (unlinkError) {
+        console.error('Error deleting temp file:', unlinkError);
       }
     }
+
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
 }
