@@ -28,11 +28,9 @@ async function downloadImage(imageUrl) {
 }
 
 export default async function handler(req, res) {
-  // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   
-  // Handle preflight
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Methods', 'POST');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -63,24 +61,40 @@ export default async function handler(req, res) {
     console.log('Image downloaded successfully');
 
     console.log('Launching browser...');
-    browser = await chromium.puppeteer.launch({
-      args: chromium.args,
+    const options = {
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu'
+      ],
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
+      executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
-    });
+    };
+    
+    console.log('Browser launch options:', JSON.stringify(options, null, 2));
+    browser = await chromium.puppeteer.launch(options);
     
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 800 });
     
     console.log('Navigating to mush.style...');
     await page.goto('https://www.mush.style/en/ai', {
-      waitUntil: 'networkidle0'
+      waitUntil: 'networkidle0',
+      timeout: 60000
     });
     
     console.log('Looking for upload button...');
-    const uploadButton = await page.waitForSelector('button:has-text("Upload your style inspiration")');
+    const uploadButton = await page.waitForSelector('button:has-text("Upload your style inspiration")', {
+      timeout: 30000
+    });
     await uploadButton.click();
     
     console.log('Handling file upload...');
@@ -90,9 +104,7 @@ export default async function handler(req, res) {
     ]);
     await fileChooser.accept([tempFilePath]);
     
-    // Wait for upload to complete
     await page.waitForTimeout(2000);
-    
     console.log('Upload successful');
     res.status(200).json({ success: true });
     
@@ -100,20 +112,22 @@ export default async function handler(req, res) {
     console.error('Handler error:', error);
     res.status(500).json({ 
       success: false, 
-      error: error.message || 'Internal server error'
+      error: error.message || 'An unknown error occurred'
     });
   } finally {
     if (browser) {
-      console.log('Closing browser...');
-      await browser.close();
+      try {
+        await browser.close();
+      } catch (error) {
+        console.error('Error closing browser:', error);
+      }
     }
     if (tempFilePath) {
       try {
-        console.log('Cleaning up temp file...');
         await fs.unlink(tempFilePath);
       } catch (error) {
-        console.error('Error cleaning up temp file:', error);
+        console.error('Error deleting temp file:', error);
       }
     }
   }
-} 
+}
