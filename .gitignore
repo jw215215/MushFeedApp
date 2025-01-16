@@ -33,4 +33,7 @@ yarn-error.log*
 *.sw?
 
 # Temp directory
-/temp 
+/temp
+
+# Config
+config.js
