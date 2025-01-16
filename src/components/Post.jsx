@@ -25,7 +25,10 @@ function Post({ post }) {
 
   const handleShopLook = async () => {
     try {
-      const fullImageUrl = post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`;
+      const fullImageUrl = post.image_url.startsWith('http') 
+        ? post.image_url 
+        : new URL(post.image_url, window.location.origin).toString();
+      
       console.log('Sending image URL:', fullImageUrl);
       
       const apiUrl = import.meta.env.PROD ? 

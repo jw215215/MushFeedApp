@@ -10,10 +10,6 @@ async function downloadImage(imageUrl) {
     const tempDir = os.tmpdir();
     const tempFilePath = path.join(tempDir, `temp-${Date.now()}.jpg`);
 
-    if (imageUrl.startsWith('/')) {
-      imageUrl = `http://localhost:5173${imageUrl}`;
-    }
-
     const response = await fetch(imageUrl);
     if (!response.ok) {
       console.error('Download failed:', response.status, response.statusText);
