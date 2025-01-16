@@ -69,10 +69,11 @@ export default async function handler(req, res) {
     const minimalArgs = chromium.args;
 
     browser = await puppeteer.launch({
-      args: minimalArgs,
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
       executablePath,
       headless: chromium.headless,
-      ignoreHTTPSErrors: true,
+      ignoreHTTPSErrors: true
     });
     
     console.log('Browser launched successfully');
