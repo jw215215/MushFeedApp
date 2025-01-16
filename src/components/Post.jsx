@@ -27,13 +27,11 @@ function Post({ post }) {
     try {
       const fullImageUrl = post.image_url.startsWith('http') 
         ? post.image_url 
-        : new URL(post.image_url, window.location.origin).toString();
+        : `https://mush-feed-app.vercel.app${post.image_url}`;
       
       console.log('Sending image URL:', fullImageUrl);
       
-      const apiUrl = import.meta.env.PROD ? 
-        'https://mush-feed-app.vercel.app/api/shop-look' : 
-        'http://localhost:3000/api/shop-look';
+      const apiUrl = 'https://mush-feed-app.vercel.app/api/shop-look';
       console.log('Using API URL:', apiUrl);
 
       const response = await fetch(apiUrl, {
