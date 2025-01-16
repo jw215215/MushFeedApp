@@ -51,13 +51,33 @@ yum install -y \
     dbus-glib \
     gtk3
 
+# Install required libraries
+LIBS=(
+  nspr
+  nss
+  nss-util
+  mesa-libgbm
+  mesa-libGL
+)
+
+# Install each library
+for LIB in "${LIBS[@]}"; do
+  yum install -y "$LIB"
+  # Find the installed library files and copy them to the libs directory
+  find /usr/lib64 -name "lib${LIB}*.so*" -exec cp {} ./libs/ \;
+done
+
 # Create required directories
 mkdir -p /tmp/chromium
 mkdir -p /tmp/chromium-cache
 
+# Copy shared libraries to appropriate location
+cp -r ./libs/* /usr/lib/
+
 # Set permissions
 chmod -R 777 /tmp/chromium
 chmod -R 777 /tmp/chromium-cache
+chmod -R 777 /usr/lib/
 
 # Create symlinks for libraries
 ln -s /usr/lib64/libnspr4.so /usr/lib/libnspr4.so
