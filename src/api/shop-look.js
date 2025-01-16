@@ -1,8 +1,31 @@
-import { webkit } from 'playwright-core';
+import { webkit, chromium } from 'playwright-core';
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
+
+// Install browser on first run
+async function ensureBrowser() {
+  try {
+    console.log('Installing browser...');
+    const { exec } = require('child_process');
+    await new Promise((resolve, reject) => {
+      exec('npx playwright install webkit', (error, stdout, stderr) => {
+        if (error) {
+          console.error('Install error:', error);
+          reject(error);
+          return;
+        }
+        console.log('Install output:', stdout);
+        resolve();
+      });
+    });
+    console.log('Browser installed successfully');
+  } catch (error) {
+    console.error('Failed to install browser:', error);
+    throw error;
+  }
+}
 
 async function downloadImage(imageUrl) {
   try {
@@ -47,9 +70,12 @@ export default async function shopLookHandler(req, res) {
     tempFilePath = await downloadImage(image_path);
     console.log('Image downloaded successfully');
 
+    // Ensure browser is installed
+    await ensureBrowser();
+
     console.log('Launching browser...');
     browser = await webkit.launch({ 
-      headless: true // Change to true for Vercel
+      headless: true
     });
     
     const context = await browser.newContext({
