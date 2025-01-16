@@ -16,7 +16,7 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist",
-        "buildCommand": "CHROMIUM_PATH=$(which chromium-browser) npm run build"
+        "buildCommand": "CHROMIUM_PATH=$(which chromium) npm run build"
       }
     }
   ],
@@ -43,6 +43,6 @@
   ],
   "env": {
     "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
-    "CHROMIUM_PATH": "/usr/bin/chromium-browser"
+    "CHROMIUM_PATH": "/usr/bin/chromium"
   }
 }
