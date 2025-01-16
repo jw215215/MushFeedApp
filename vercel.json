@@ -34,11 +34,5 @@
     "env": {
       "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
     }
-  },
-  "functions": {
-    "api/shop-look.js": {
-      "memory": 3008,
-      "maxDuration": 30
-    }
   }
 }
