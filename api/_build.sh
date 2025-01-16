@@ -94,9 +94,9 @@ ln -s /usr/lib64/libnspr4.so /usr/lib/libnspr4.so
 ln -s /usr/lib64/libnss3.so /usr/lib/libnss3.so
 
 # Set environment variables
-export CHROME_PATH="$(which chromium-browser)"
+export CHROME_PATH="$(which chromium)"
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-export PUPPETEER_EXECUTABLE_PATH="$(which chromium-browser)"
+export PUPPETEER_EXECUTABLE_PATH="$(which chromium)"
 
 # Set LD_LIBRARY_PATH to include /usr/lib
 export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH

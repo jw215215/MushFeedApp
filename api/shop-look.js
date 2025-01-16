@@ -77,7 +77,7 @@ export default async function handler(req, res) {
     browser = await puppeteer.launch({
       args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
       defaultViewport: chromium.defaultViewport,
-      executablePath,
+      executablePath: process.env.CHROMIUM_PATH || executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true
     });
