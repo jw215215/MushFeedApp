@@ -6,7 +6,9 @@
       "use": "@vercel/node",
       "config": {
         "maxDuration": 30,
-        "memory": 3008
+        "memory": 3008,
+        "includeFiles": ["api/_build.sh"],
+        "buildCommand": "chmod +x api/_build.sh && ./api/_build.sh"
       }
     },
     {
@@ -25,7 +27,18 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "/"
     }
-  ]
-} 
+  ],
+  "build": {
+    "env": {
+      "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
+    }
+  },
+  "functions": {
+    "api/shop-look.js": {
+      "memory": 3008,
+      "maxDuration": 30
+    }
+  }
+}
