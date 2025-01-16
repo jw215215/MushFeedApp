@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import sampleData from '../data/sampleData.json';
 import ShopLookButton from './ShopLookButton';
 import './Post.css';
+import axios from 'axios';
 
 function Post({ post }) {
   const [isLiked, setIsLiked] = useState(post.likes?.includes('tim_01') || false);
   const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
-  const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
 
   const comments = sampleData.comments.filter(comment => comment.post_id === post.id) || [];
@@ -21,6 +21,35 @@ function Post({ post }) {
     e.preventDefault();
     if (!newComment.trim()) return;
     setNewComment('');
+  };
+
+  const handleShopLook = async () => {
+    try {
+      const fullImageUrl = post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`;
+      
+      const response = await fetch('https://backend.mush.style/api/v1/ai/outfits/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        body: JSON.stringify({
+          url: fullImageUrl,
+          source: 'external'
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.outfitImage) {
+        window.open(`https://www.mush.style/en/ai/result/${data.outfitImage}`, '_blank');
+      } else {
+        window.open('https://www.mush.style/en/ai', '_blank');
+      }
+    } catch (error) {
+      console.error('Error analyzing outfit:', error);
+      window.open('https://www.mush.style/en/ai', '_blank');
+    }
   };
 
   const renderCommentText = (text, links) => {
@@ -59,7 +88,7 @@ function Post({ post }) {
       
       <div className="post-image" style={{ position: 'relative' }} onDoubleClick={handleLike}>
         <img src={post.image_url} alt="" />
-        <ShopLookButton imagePath={post.image_url} />
+        <ShopLookButton imagePath={post.image_url} onClick={handleShopLook} />
       </div>
       
       <div className="post-actions">
@@ -69,7 +98,7 @@ function Post({ post }) {
         >
           {isLiked ? '❤️' : '🤍'}
         </button>
-        <button onClick={() => setShowComments(!showComments)}>💬</button>
+        <span>💬 {comments.length}</span>
       </div>
       
       <div className="post-info">
@@ -81,28 +110,33 @@ function Post({ post }) {
           {post.ai_generated_content?.caption || post.caption}
         </div>
         
-        {showComments && (
-          <div className="comments-section">
-            {comments.map(comment => (
-              <div key={comment.id} className="comment">
+        <div className="comments-section">
+          {comments.map(comment => (
+            <div key={comment.id} className="comment">
+              <img 
+                src={sampleData.users.find(u => u.id === comment.user_id)?.profile_pic} 
+                alt="" 
+                className="comment-avatar" 
+              />
+              <div className="comment-content">
                 <Link to={`/profile/${comment.user_id}`}>
                   {sampleData.users.find(u => u.id === comment.user_id)?.name || 'Unknown User'}
-                </Link>
+                </Link>{' '}
                 {renderCommentText(comment.text, comment.shopping_links)}
               </div>
-            ))}
-            
-            <form onSubmit={handleAddComment} className="add-comment">
-              <input
-                type="text"
-                placeholder="Add a comment..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <button type="submit">Post</button>
-            </form>
-          </div>
-        )}
+            </div>
+          ))}
+          
+          <form onSubmit={handleAddComment} className="add-comment">
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <button type="submit">Post</button>
+          </form>
+        </div>
         <div className="hashtags">
           {(post.ai_generated_content?.hashtags || post.hashtags || []).map(tag => (
             <Link 

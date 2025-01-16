@@ -1,4 +1,4 @@
-import { chromium } from 'playwright-core';
+import { webkit } from 'playwright-core';
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import path from 'path';
@@ -38,35 +38,49 @@ export default async function handler(req, res) {
   try {
     tempFilePath = await downloadImage(image_path);
 
-    browser = await chromium.launch({ 
-      headless: false,
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    // Launch WebKit (Safari) browser
+    browser = await webkit.launch({ 
+      headless: false
     });
     
-    const context = await browser.newContext();
+    const context = await browser.newContext({
+      viewport: { width: 1280, height: 800 }
+    });
     const page = await context.newPage();
     
-    await page.goto('https://www.mush.style/en/ai');
-    await page.getByRole('button', { name: 'Upload your style inspiration' }).click();
+    // Increase navigation timeout to 2 minutes
+    page.setDefaultNavigationTimeout(120000);
+    page.setDefaultTimeout(120000);
     
+    await page.goto('https://www.mush.style/en/ai');
+    
+    // Wait for and click the upload button
+    const uploadButton = await page.waitForSelector('button:has-text("Upload your style inspiration")');
+    await uploadButton.click();
+    
+    // Handle file upload
     const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.getByText('upload file').click();
+    await page.click('text=upload file');
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(tempFilePath);
     
-    await page.waitForSelector('.results', { timeout: 30000 });
-    
+    // Send success response immediately after upload
     res.status(200).json({ success: true });
+    
+    // Don't close the browser - let the user see what's happening
+    // The browser will close when the user closes the window
+    
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ 
       success: false, 
       error: error.message
     });
-  } finally {
     if (browser) {
       await browser.close();
     }
+  } finally {
+    // Only clean up the temp file
     if (tempFilePath) {
       try {
         await fs.unlink(tempFilePath);

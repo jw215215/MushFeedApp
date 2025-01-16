@@ -38,10 +38,8 @@ function Feed() {
       new Date(b.timestamp) - new Date(a.timestamp)
     );
 
-    setTimeout(() => {
-      setPosts(sortedPosts);
-      setLoading(false);
-    }, 500);
+    setPosts(sortedPosts);
+    setLoading(false);
   }, []);
 
   const handleTouchStart = (e) => {

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Mush Style Uploader",
+  "version": "1.0",
+  "description": "Automatically uploads images to mush.style",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.mush.style/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.mush.style/*"],
+      "js": ["content.js"]
+    }
+  ]
+} 
