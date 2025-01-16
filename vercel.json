@@ -1,17 +1,13 @@
 {
   "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "memory": 3008,
-      "maxDuration": 60
-    }
-  },
   "builds": [
     {
       "src": "api/**/*.js",
       "use": "@vercel/node",
       "config": {
-        "installCommand": "npm install && playwright install --with-deps webkit"
+        "installCommand": "npm install && playwright install --with-deps webkit",
+        "maxDuration": 60,
+        "memory": 3008
       }
     },
     {
@@ -26,7 +22,7 @@
     {
       "src": "/api/shop-look",
       "dest": "/api/shop-look.js",
-      "methods": ["POST"]
+      "methods": ["POST", "OPTIONS"]
     },
     {
       "src": "/(.*)",
