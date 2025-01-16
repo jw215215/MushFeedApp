@@ -62,11 +62,21 @@ export default async function handler(req, res) {
     console.log('Image downloaded successfully');
 
     console.log('Launching browser...');
+    
+    // Configure minimal Chrome
+    const executablePath = await chromium.executablePath;
+    
+    const minimalArgs = [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--single-process'
+    ];
+
     browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: "new",
+      args: minimalArgs,
+      executablePath,
+      headless: true,
       ignoreHTTPSErrors: true,
     });
     
