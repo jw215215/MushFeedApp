@@ -26,10 +26,12 @@ function Post({ post }) {
   const handleShopLook = async () => {
     try {
       const fullImageUrl = post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`;
+      console.log('Sending image URL:', fullImageUrl);
       
       const apiUrl = import.meta.env.PROD ? 
         'https://mush-feed-app.vercel.app/api/shop-look' : 
         'http://localhost:3000/api/shop-look';
+      console.log('Using API URL:', apiUrl);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -42,10 +44,13 @@ function Post({ post }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to analyze outfit');
+        const errorText = await response.text();
+        console.error('Server response:', errorText);
+        throw new Error(`Failed to analyze outfit: ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('Server response data:', data);
       if (data.success) {
         console.log('Successfully sent image to Mush.style');
       } else {

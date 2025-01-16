@@ -6,6 +6,7 @@ import os from 'os';
 
 async function downloadImage(imageUrl) {
   try {
+    console.log('Downloading image from:', imageUrl);
     const tempDir = os.tmpdir();
     const tempFilePath = path.join(tempDir, `temp-${Date.now()}.jpg`);
 
@@ -14,10 +15,14 @@ async function downloadImage(imageUrl) {
     }
 
     const response = await fetch(imageUrl);
-    if (!response.ok) throw new Error('Failed to download image');
+    if (!response.ok) {
+      console.error('Download failed:', response.status, response.statusText);
+      throw new Error('Failed to download image');
+    }
     
     const buffer = await response.arrayBuffer();
     await fs.writeFile(tempFilePath, Buffer.from(buffer));
+    console.log('Image downloaded to:', tempFilePath);
 
     return tempFilePath;
   } catch (error) {
@@ -27,16 +32,28 @@ async function downloadImage(imageUrl) {
 }
 
 export default async function shopLookHandler(req, res) {
+  console.log('Received request body:', req.body);
   const { image_path } = req.body;
+  
+  if (!image_path) {
+    console.error('No image_path provided');
+    return res.status(400).json({ 
+      success: false, 
+      error: 'No image path provided' 
+    });
+  }
+
   let browser;
   let tempFilePath;
   
   try {
+    console.log('Starting image download...');
     tempFilePath = await downloadImage(image_path);
+    console.log('Image downloaded successfully');
 
-    // Launch WebKit (Safari) browser
+    console.log('Launching browser...');
     browser = await webkit.launch({ 
-      headless: false
+      headless: true // Change to true for Vercel
     });
     
     const context = await browser.newContext({
@@ -44,41 +61,36 @@ export default async function shopLookHandler(req, res) {
     });
     const page = await context.newPage();
     
-    // Increase navigation timeout to 2 minutes
-    page.setDefaultNavigationTimeout(120000);
-    page.setDefaultTimeout(120000);
-    
+    console.log('Navigating to mush.style...');
     await page.goto('https://www.mush.style/en/ai');
     
-    // Wait for and click the upload button
+    console.log('Looking for upload button...');
     const uploadButton = await page.waitForSelector('button:has-text("Upload your style inspiration")');
     await uploadButton.click();
     
-    // Handle file upload
+    console.log('Handling file upload...');
     const fileChooserPromise = page.waitForEvent('filechooser');
     await page.click('text=upload file');
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(tempFilePath);
     
-    // Send success response immediately after upload
+    console.log('Upload successful');
     res.status(200).json({ success: true });
     
-    // Don't close the browser - let the user see what's happening
-    // The browser will close when the user closes the window
-    
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Handler error:', error);
     res.status(500).json({ 
       success: false, 
-      error: error.message
+      error: error.message || 'Internal server error'
     });
+  } finally {
     if (browser) {
+      console.log('Closing browser...');
       await browser.close();
     }
-  } finally {
-    // Only clean up the temp file
     if (tempFilePath) {
       try {
+        console.log('Cleaning up temp file...');
         await fs.unlink(tempFilePath);
       } catch (error) {
         console.error('Error cleaning up temp file:', error);
