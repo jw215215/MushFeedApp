@@ -49,7 +49,12 @@ yum install -y \
     libxcb \
     GConf2 \
     dbus-glib \
-    gtk3
+    gtk3 \
+    libgbm \
+    libasound2 \
+    libnss3 \
+    libxshmfence1 \
+    libnspr4
 
 # Install required libraries
 LIBS=(
@@ -58,6 +63,11 @@ LIBS=(
   nss-util
   mesa-libgbm
   mesa-libGL
+  libgbm
+  libasound2
+  libnss3
+  libxshmfence1
+  libnspr4
 )
 
 # Install each library
