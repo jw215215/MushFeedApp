@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     console.log('Launching browser...');
     
     // Configure minimal Chrome
-    const executablePath = await chromium.executablePath();
+    const executablePath = process.env.VERCEL ? '/usr/bin/chromium-browser' : await chromium.executablePath();
     console.log('Executable path:', executablePath);
     
     const minimalArgs = chromium.args;
