@@ -27,28 +27,33 @@ function Post({ post }) {
     try {
       const fullImageUrl = post.image_url.startsWith('http') ? post.image_url : `${window.location.origin}${post.image_url}`;
       
-      const response = await fetch('https://backend.mush.style/api/v1/ai/outfits/analyze', {
+      const apiUrl = import.meta.env.PROD ? 
+        'https://mush-feed-app.vercel.app/api/shop-look' : 
+        'http://localhost:3000/api/shop-look';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          url: fullImageUrl,
-          source: 'external'
+          image_path: fullImageUrl
         })
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to analyze outfit');
+      }
+
       const data = await response.json();
-      
-      if (data.outfitImage) {
-        window.open(`https://www.mush.style/en/ai/result/${data.outfitImage}`, '_blank');
+      if (data.success) {
+        console.log('Successfully sent image to Mush.style');
       } else {
-        window.open('https://www.mush.style/en/ai', '_blank');
+        throw new Error(data.error || 'Failed to analyze outfit');
       }
     } catch (error) {
       console.error('Error analyzing outfit:', error);
-      window.open('https://www.mush.style/en/ai', '_blank');
+      alert('Failed to analyze outfit. Please try again.');
     }
   };
 
