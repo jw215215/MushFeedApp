@@ -1,4 +1,4 @@
-import chromium from 'playwright-aws-lambda';
+import chromium from 'chrome-aws-lambda';
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import path from 'path';
@@ -63,27 +63,20 @@ export default async function handler(req, res) {
     console.log('Image downloaded successfully');
 
     console.log('Launching browser...');
-    browser = await chromium.launchChromium({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage'
-      ]
+    browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
     
-    const context = await browser.newContext({
-      viewport: { width: 1280, height: 800 }
-    });
-    const page = await context.newPage();
-    
-    // Set longer timeouts for serverless environment
-    page.setDefaultTimeout(30000);
-    page.setDefaultNavigationTimeout(30000);
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1280, height: 800 });
     
     console.log('Navigating to mush.style...');
     await page.goto('https://www.mush.style/en/ai', {
-      waitUntil: 'networkidle'
+      waitUntil: 'networkidle0'
     });
     
     console.log('Looking for upload button...');
@@ -91,10 +84,11 @@ export default async function handler(req, res) {
     await uploadButton.click();
     
     console.log('Handling file upload...');
-    const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.click('text=upload file');
-    const fileChooser = await fileChooserPromise;
-    await fileChooser.setFiles(tempFilePath);
+    const [fileChooser] = await Promise.all([
+      page.waitForFileChooser(),
+      page.click('text=upload file')
+    ]);
+    await fileChooser.accept([tempFilePath]);
     
     // Wait for upload to complete
     await page.waitForTimeout(2000);
