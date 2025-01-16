@@ -5,27 +5,30 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    manifest: true,
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          let extType = assetInfo.name.split('.')[1];
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-            extType = 'img';
+          const info = assetInfo.name.split('.');
+          const ext = info[info.length - 1];
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+            return `assets/images/[name]-[hash][extname]`;
+          }
+          if (/css/i.test(ext)) {
+            return `assets/css/[name]-[hash][extname]`;
           }
           return `assets/[name]-[hash][extname]`;
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
       },
     },
-    assetsInlineLimit: 0,
   },
   server: {
     port: 5173,
     host: true,
-    headers: {
-      'Cache-Control': 'no-store',
-      'Content-Type': 'text/css',
-    },
   },
 })

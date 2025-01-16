@@ -15,7 +15,8 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "dist",
+        "buildCommand": "npm run build"
       }
     }
   ],
@@ -29,24 +30,15 @@
       }
     },
     {
-      "src": "/assets/(.*\\.css)",
-      "headers": {
-        "Content-Type": "text/css",
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "continue": true
+      "handle": "filesystem"
     },
     {
-      "src": "/assets/(.*\\.js)",
-      "headers": {
-        "Content-Type": "application/javascript",
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "continue": true
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/index.html"
     }
   ],
   "build": {
