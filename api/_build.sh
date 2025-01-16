@@ -87,3 +87,6 @@ ln -s /usr/lib64/libnss3.so /usr/lib/libnss3.so
 export CHROME_PATH="$(which chromium-browser)"
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 export PUPPETEER_EXECUTABLE_PATH="$(which chromium-browser)"
+
+# Set LD_LIBRARY_PATH to include /usr/lib
+export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
