@@ -8,7 +8,7 @@ const port = 3000;
 
 // Enable CORS for the React frontend
 app.use(cors({
-  origin: config.isVercel ? 'https://your-vercel-app.vercel.app' : 'http://localhost:5173',
+  origin: config.isVercel ? 'https://mush-feed-app.vercel.app' : 'http://localhost:5173',
   credentials: true
 }));
 
