@@ -1,0 +1,278 @@
+{
+  "users": [
+    {
+      "id": "sofia_chen",
+      "name": "Sofia Chen",
+      "profile_pic": "/generated-photos/sofia_chen_1.jpg",
+      "bio": "Tech-savvy minimalist | Silicon Valley style innovator ✨",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "marcus_johnson",
+      "name": "Marcus Johnson",
+      "profile_pic": "/generated-photos/marcus_johnson_1.jpg",
+      "bio": "Urban luxury meets street culture 🌆 | Fashion forward",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "priya_patel",
+      "name": "Priya Patel",
+      "profile_pic": "/generated-photos/priya_patel_1.jpg",
+      "bio": "Fusion of tradition and luxury ✨ | Art & Fashion",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "diego_ramirez",
+      "name": "Diego Ramirez",
+      "profile_pic": "/generated-photos/diego_ramirez_1.jpg",
+      "bio": "Vintage vibes in modern times 🌟 | Classic style redefined",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "emma_wilson",
+      "name": "Emma Wilson",
+      "profile_pic": "/generated-photos/emma_wilson_1.jpg",
+      "bio": "Sustainable fashion advocate 🌱 | Earth-conscious style",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "raj_kumar",
+      "name": "Raj Kumar",
+      "profile_pic": "/generated-photos/raj_kumar_1.jpg",
+      "bio": "Tech-wear innovator 🚀 | Future of fashion",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "yuki_tanaka",
+      "name": "Yuki Tanaka",
+      "profile_pic": "/generated-photos/yuki_tanaka_1.jpg",
+      "bio": "Avant-garde artist 🎨 | Breaking fashion boundaries",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "isabella_martinez",
+      "name": "Isabella Martinez",
+      "profile_pic": "/generated-photos/isabella_martinez_1.jpg",
+      "bio": "Boho chic meets modern romance 🌸 | Free spirit",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "james_anderson",
+      "name": "James Anderson",
+      "profile_pic": "/generated-photos/james_anderson_1.jpg",
+      "bio": "Classic menswear, timeless style 🎩 | Elegance personified",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    },
+    {
+      "id": "zara_williams",
+      "name": "Zara Williams",
+      "profile_pic": "/generated-photos/zara_williams_1.jpg",
+      "bio": "Contemporary fashion visionary ⚡ | Bold & Beautiful",
+      "following": [],
+      "followers": [],
+      "posts_count": 10
+    }
+  ],
+  "posts": [
+    {
+      "id": "sofia_chen_1",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_1.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_2",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_2.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-14T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_3",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_3.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-13T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_4",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_4.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-12T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_5",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_5.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-11T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_6",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_6.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-10T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_7",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_7.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-09T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_8",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_8.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-08T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_9",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_9.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-07T00:00:00Z"
+    },
+    {
+      "id": "sofia_chen_10",
+      "user_id": "sofia_chen",
+      "image_url": "/generated-photos/sofia_chen_10.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-06T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_1",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_1.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_2",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_2.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-14T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_3",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_3.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-13T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_4",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_4.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-12T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_5",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_5.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-11T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_6",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_6.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-10T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_7",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_7.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-09T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_8",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_8.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-08T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_9",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_9.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-07T00:00:00Z"
+    },
+    {
+      "id": "marcus_johnson_10",
+      "user_id": "marcus_johnson",
+      "image_url": "/generated-photos/marcus_johnson_10.jpg",
+      "caption": "",
+      "hashtags": [],
+      "likes": [],
+      "timestamp": "2024-01-06T00:00:00Z"
+    }
+  ],
+  "comments": [],
+  "hashtags": {}
+} 

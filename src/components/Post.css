@@ -1,0 +1,113 @@
+.post {
+  margin-bottom: 30px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.post-user {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.post-image {
+  position: relative;
+  width: 100%;
+}
+
+.post-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-actions {
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+.post-actions button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.post-info {
+  padding: 0 12px 12px;
+}
+
+.likes-count {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.caption {
+  margin-bottom: 8px;
+}
+
+.username {
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+  margin-right: 4px;
+}
+
+.hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.hashtag {
+  color: #0095f6;
+  text-decoration: none;
+}
+
+.comments-section {
+  margin-top: 12px;
+}
+
+.comment {
+  margin-bottom: 8px;
+}
+
+.add-comment {
+  display: flex;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.add-comment input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-comment button {
+  padding: 8px 16px;
+  background: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+} 
