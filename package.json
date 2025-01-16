@@ -10,13 +10,13 @@
     "vercel-build": "vite build"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^119.0.2",
+    "chrome-aws-lambda": "10.1.0",
+    "puppeteer-core": "10.1.0",
     "axios": "1.7.9",
     "cors": "2.8.5",
     "express": "^4.21.2",
     "form-data": "4.0.1",
     "node-fetch": "3.3.2",
-    "puppeteer-core": "^24.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.28.1"
